@@ -1,2 +1,2 @@
 # MNIST-Learn
-MNIST NN model for teaching
+MNIST NN model for teaching the model
