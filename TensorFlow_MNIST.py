@@ -1,6 +1,6 @@
 import numpy as np
 import tensorflow as tf
-
+import streamlit as st
 import tensorflow_datasets as tfds
 
 # as_supervised=True will load the dataset in a 2-tuple structure (input, target) 
@@ -24,3 +24,51 @@ def scale(image, label):
 
     return image, label
 
+scaled_train_and_validation_data = mnist_train.map(scale)
+test_data = mnist_test.map(scale)
+
+BUFFER_SIZE = 10000
+
+shuffled_train_and_validation_data = scaled_train_and_validation_data.shuffle(BUFFER_SIZE)
+validation_data = shuffled_train_and_validation_data.take(num_validation_samples)
+train_data = shuffled_train_and_validation_data.skip(num_validation_samples)
+
+BATCH_SIZE = 100
+
+train_data = train_data.batch(BATCH_SIZE)
+
+validation_data = validation_data.batch(num_validation_samples)
+
+test_data = test_data.batch(num_test_samples)
+
+validation_inputs, validation_targets = next(iter(validation_data))
+
+# MODEL
+
+input_size = 784    # 28x28x1 pixels, therefore it is a tensor of rank 3 - just remember to flatten it to a single vector
+output_size = 10    # 0 to 9
+
+# Use same hidden layer size for both hidden layers
+hidden_layer_size = 50
+activation_function = "relu"
+
+model = tf.keras.Sequential([
+
+    tf.keras.layers.Flatten(input_shape=(28, 28, 1)), # input layer
+    
+    # tf.keras.layers.Dense => activation(dot(input, weight) + bias)
+    tf.keras.layers.Dense(hidden_layer_size, activation=activation_function), # 1st hidden layer
+    tf.keras.layers.Dense(hidden_layer_size, activation=activation_function), # 2nd hidden layer
+    
+    tf.keras.layers.Dense(output_size, activation='softmax') # output layer
+])
+
+model_optimizer = "adam"
+model_loss = "sparse_categorical_crossentropy"
+
+model.compile(optimizer=model_optimizer, loss=model_loss, metrics=["accuracy"])
+
+# TRAIN THE MODEL
+NUM_EPOCHS = 5
+
+model.fit(train_data, epochs=NUM_EPOCHS, validation_data=(validation_inputs, validation_targets), verbose =2)
