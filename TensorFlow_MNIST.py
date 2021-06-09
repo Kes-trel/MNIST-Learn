@@ -69,6 +69,6 @@ model_loss = "sparse_categorical_crossentropy"
 model.compile(optimizer=model_optimizer, loss=model_loss, metrics=["accuracy"])
 
 # TRAIN THE MODEL
-NUM_EPOCHS = 5
+NUM_EPOCHS = int(st.sidebar.number_input("Number of epochs", min_value=1, step=1, help="Don't go crazy here"))
 
 model.fit(train_data, epochs=NUM_EPOCHS, validation_data=(validation_inputs, validation_targets), verbose =2)
