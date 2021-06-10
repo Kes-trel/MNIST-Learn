@@ -8,15 +8,6 @@ from help_text import *
 
 
 #inputs from streamlit app
-activation_functions_list = ["deserialize", "elu", "exponential", "gelu", "get", "hard_sigmoid", "linear", "relu", "selu", "serialize", "sigmoid", "softmax", "softplus", "softsign", "swish", "tanh"]
-
-model_optimizer_list = ["Adadelta", "Adagrad", "Adam", "Adamax", "Ftrl", "Nadam", "Optimizer", "RMSprop", "SGD"]
-
-model_loss_list = ["KLD","MAE","MAPE","MSE","MSLE","binary_crossentropy","categorical_crossentropy","categorical_hinge","cosine_similarity","deserialize","get","hinge","huber","kl_divergence","kld","kullback_leibler_divergence","log_cosh","logcosh","mae","mape","mean_absolute_error","mean_absolute_percentage_error","mean_squared_error","mean_squared_logarithmic_error","mse","msle","poisson","serialize","sparse_categorical_crossentropy","squared_hinge"]
-
-hidden_layer_number_help = """
-In neural networks, a hidden layer is located between the input and output of the algorithm, in which the function applies weights to the inputs and directs them through an activation function as the output. In short, the hidden layers perform nonlinear transformations of the inputs entered into the network. Hidden layers vary depending on the function of the neural network, and similarly, the layers may vary depending on their associated weights.
-"""
 
 BUFFER_SIZE = st.sidebar.number_input("Buffer Size", value=100, min_value=1, step=100, format="%i", help=buffer_size_help)
 BATCH_SIZE = st.sidebar.number_input("Batch Size", value=100, min_value=1, step=100, format="%i", help=batch_size_help)
@@ -27,13 +18,6 @@ model_optimizer = st.sidebar.selectbox("Select Model Optimiser Class", model_opt
 model_loss = st.sidebar.selectbox("Select Model Loss", model_loss_list, index=28, help=model_loss_help)
 NUM_EPOCHS = st.sidebar.number_input("Number of epochs", value=5, min_value=1, step=1, format="%i", help=epochs_help)
 
-# BUFFER_SIZE = 1000
-# BATCH_SIZE = 100
-# hidden_layer_size = 50
-# activation_function = "relu"
-# model_optimizer = "adam"
-# model_loss = "sparse_categorical_crossentropy"
-# NUM_EPOCHS = 5
 
 # as_supervised=True will load the dataset in a 2-tuple structure (input, target) 
 mnist_dataset, mnist_info = tfds.load(name='mnist', with_info=True, as_supervised=True)
@@ -56,13 +40,9 @@ def scale(image, label):
 scaled_train_and_validation_data = mnist_train.map(scale)
 test_data = mnist_test.map(scale)
 
-# BUFFER_SIZE = 1000
-
 shuffled_train_and_validation_data = scaled_train_and_validation_data.shuffle(BUFFER_SIZE)
 validation_data = shuffled_train_and_validation_data.take(num_validation_samples)
 train_data = shuffled_train_and_validation_data.skip(num_validation_samples)
-
-# BATCH_SIZE = 100
 
 train_data = train_data.batch(BATCH_SIZE)
 validation_data = validation_data.batch(num_validation_samples)
@@ -70,13 +50,10 @@ test_data = test_data.batch(num_test_samples)
 validation_inputs, validation_targets = next(iter(validation_data))
 
 # MODEL
-
 input_size = 784    # 28x28x1 pixels, therefore it is a tensor of rank 3 - just remember to flatten it to a single vector
 output_size = 10    # 0 to 9
 
 # Use same hidden layer size for both hidden layers
-# hidden_layer_size = 50
-# activation_function = "relu"
 
 model = tf.keras.Sequential()
 
@@ -89,14 +66,7 @@ model.add(tf.keras.layers.Dense(output_size, activation='softmax')) # output lay
 
 model.compile(optimizer=model_optimizer, loss=model_loss, metrics=["accuracy"])
 
-# model_optimizer = "adam"
-# model_loss = "sparse_categorical_crossentropy"
-
-model.compile(optimizer=model_optimizer, loss=model_loss, metrics=["accuracy"])
-
-# TRAIN THE MODEL
-
-# NUM_EPOCHS = 5
+# Custom callback for epoch timings just like you get from model fit verbose
 
 class EpochTimingCallback(tf.keras.callbacks.Callback):
     def __init__(self, logs={}):
@@ -108,11 +78,11 @@ class EpochTimingCallback(tf.keras.callbacks.Callback):
 
 epoch_time = EpochTimingCallback()
 
+# Train the model
 history = model.fit(train_data, epochs=NUM_EPOCHS, validation_data=(validation_inputs, validation_targets), verbose =1, callbacks=[epoch_time])
 
-st.write(epoch_time.logs)
 
-st.write(history.history)
+# Streamlit section
 
 df = pd.DataFrame.from_dict(history.history)
 df.columns = ["Loss", "Accuracy %", "Validation Loss", "Validation Accuracy %"]
