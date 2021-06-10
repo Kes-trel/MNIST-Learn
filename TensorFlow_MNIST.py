@@ -57,12 +57,9 @@ output_size = 10    # 0 to 9
 # Use same hidden layer size for both hidden layers
 
 model = tf.keras.Sequential()
-
 model.add(tf.keras.layers.Flatten(input_shape=(28, 28, 1))) # input layer
-
 for layer in range(hidden_layers_number):
     model.add(tf.keras.layers.Dense(hidden_layer_size, activation=activation_function)) # hidden layers
-
 model.add(tf.keras.layers.Dense(output_size, activation='softmax')) # output layer
 
 model.compile(optimizer=model_optimizer, loss=model_loss, metrics=["accuracy"])
