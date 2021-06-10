@@ -16,6 +16,10 @@ A bigger batch size results in slower training. We are taking advantage of batch
 * Notice that the validation accuracy starts from a low number and with 5 epochs actually finishes at a lower number. That's because there are fewer updates in a single epoch. Try a batch size of 30,000 or 50,000. That's very close to single batch Gradient Descent (GD) for this problem. What do you think about the speed? You will need to change the max epochs to 100 (for instance), as 5 epochs won't be enough to train the model. What do you think about the speed of optimization?
 """
 
+hidden_layer_number_help = """
+In neural networks, a hidden layer is located between the input and output of the algorithm, in which the function applies weights to the inputs and directs them through an activation function as the output. In short, the hidden layers perform nonlinear transformations of the inputs entered into the network. Hidden layers vary depending on the function of the neural network, and similarly, the layers may vary depending on their associated weights.
+"""
+
 hidden_layer_help = """
 To keep simple here we will use same hidden layer unit size for all hidden layers. If you think this is too simple you should not be using this site my friend.
 * Try 200 or 500 and so on... The validation accuracy is significantly higher (as the algorithm with 50 hidden units was too simple of a model). Naturally, it takes the algorithm much longer to train (unless early stopping is triggered too soon).

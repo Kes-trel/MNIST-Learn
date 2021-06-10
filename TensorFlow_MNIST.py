@@ -14,13 +14,18 @@ model_optimizer_list = ["Adadelta", "Adagrad", "Adam", "Adamax", "Ftrl", "Nadam"
 
 model_loss_list = ["KLD","MAE","MAPE","MSE","MSLE","binary_crossentropy","categorical_crossentropy","categorical_hinge","cosine_similarity","deserialize","get","hinge","huber","kl_divergence","kld","kullback_leibler_divergence","log_cosh","logcosh","mae","mape","mean_absolute_error","mean_absolute_percentage_error","mean_squared_error","mean_squared_logarithmic_error","mse","msle","poisson","serialize","sparse_categorical_crossentropy","squared_hinge"]
 
-BUFFER_SIZE = st.sidebar.number_input("Buffer Size", value=100, min_value=1, step=100, format="%i" , help=buffer_size_help)
-BATCH_SIZE = st.sidebar.number_input("Batch Size", value=100, min_value=1, step=100, format="%i" , help=batch_size_help)
-hidden_layer_size = st.sidebar.number_input("Hidden Layer Unit Size", value=50, min_value=1, step=10, format="%i" , help=hidden_layer_help)
+hidden_layer_number_help = """
+In neural networks, a hidden layer is located between the input and output of the algorithm, in which the function applies weights to the inputs and directs them through an activation function as the output. In short, the hidden layers perform nonlinear transformations of the inputs entered into the network. Hidden layers vary depending on the function of the neural network, and similarly, the layers may vary depending on their associated weights.
+"""
+
+BUFFER_SIZE = st.sidebar.number_input("Buffer Size", value=100, min_value=1, step=100, format="%i", help=buffer_size_help)
+BATCH_SIZE = st.sidebar.number_input("Batch Size", value=100, min_value=1, step=100, format="%i", help=batch_size_help)
+hidden_layers_number = st.sidebar.number_input("Number of Hidden Layers", value=2, min_value=1, step=1, format="%i", help=hidden_layer_number_help)
+hidden_layer_size = st.sidebar.number_input("Hidden Layer Unit Size", value=50, min_value=1, step=10, format="%i", help=hidden_layer_help)
 activation_function = st.sidebar.selectbox("Select Activation Function", activation_functions_list, index=7, help=activation_function_help)
 model_optimizer = st.sidebar.selectbox("Select Model Optimiser Class", model_optimizer_list, index=2, help=model_optimizer_help)
 model_loss = st.sidebar.selectbox("Select Model Loss", model_loss_list, index=28, help=model_loss_help)
-NUM_EPOCHS = int(st.sidebar.number_input("Number of epochs", value=5, min_value=1, step=1, help=epochs_help))
+NUM_EPOCHS = st.sidebar.number_input("Number of epochs", value=5, min_value=1, step=1, format="%i", help=epochs_help)
 
 # BUFFER_SIZE = 1000
 # BATCH_SIZE = 100
@@ -73,16 +78,16 @@ output_size = 10    # 0 to 9
 # hidden_layer_size = 50
 # activation_function = "relu"
 
-model = tf.keras.Sequential([
+model = tf.keras.Sequential()
 
-    tf.keras.layers.Flatten(input_shape=(28, 28, 1)), # input layer
-    
-    # tf.keras.layers.Dense => activation(dot(input, weight) + bias)
-    tf.keras.layers.Dense(hidden_layer_size, activation=activation_function), # 1st hidden layer
-    tf.keras.layers.Dense(hidden_layer_size, activation=activation_function), # 2nd hidden layer
+model.add(tf.keras.layers.Flatten(input_shape=(28, 28, 1))) # input layer
 
-    tf.keras.layers.Dense(output_size, activation='softmax') # output layer
-])
+for layer in range(hidden_layers_number):
+    model.add(tf.keras.layers.Dense(hidden_layer_size, activation=activation_function)) # hidden layers
+
+model.add(tf.keras.layers.Dense(output_size, activation='softmax')) # output layer
+
+model.compile(optimizer=model_optimizer, loss=model_loss, metrics=["accuracy"])
 
 # model_optimizer = "adam"
 # model_loss = "sparse_categorical_crossentropy"
