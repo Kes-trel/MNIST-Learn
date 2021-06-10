@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import tensorflow as tf
 import streamlit as st
 import tensorflow_datasets as tfds
@@ -71,6 +72,13 @@ model.compile(optimizer=model_optimizer, loss=model_loss, metrics=["accuracy"])
 # TRAIN THE MODEL
 NUM_EPOCHS = int(st.sidebar.number_input("Number of epochs", min_value=1, step=1, help="Don't go crazy here"))
 
-history = model.fit(train_data, epochs=NUM_EPOCHS, validation_data=(validation_inputs, validation_targets), verbose =2, callbacks)
+history = model.fit(train_data, epochs=NUM_EPOCHS, validation_data=(validation_inputs, validation_targets), verbose =2)
 
-st.write(history.history.items())
+df = pd.DataFrame.from_dict(history.history)
+df.columns = ["Loss", "Accuracy %", "Validation Loss", "Validation Accuracy %"]
+df["Accuracy %"] = df["Accuracy %"] * 100
+df["Validation Accuracy %"] = df["Validation Accuracy %"] * 100
+
+st.write(history.history)
+
+st.table(df)
