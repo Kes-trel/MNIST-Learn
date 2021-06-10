@@ -14,7 +14,20 @@ The Buffer Size parameter is here for cases when we're dealing with enormous dat
 * Buffer Size in between 1 and Number of Samples then a computational optimization to approximate uniform shuffling.
 """
 
-BUFFER_SIZE = st.sidebar.number_input("Buffer Size", value=1000, min_value=1, step=1, format="%i" , help=buffer_size_help)
+batch_size_help = """
+A batch size of 1 results in the SGD. It takes the algorithm very little time to process a single batch (as it is one data point), but there are thousands of batches (54,000 in MNIST), thus the algorithm is actually slow. The middle ground (mini-batching such as 100 samples per batch) is optimal.
+
+* Notice that the validation accuracy starts from a high number. That's because there are lots updates in a single epoch. Once the training is over, the accuracy is lower than all other batch sizes (SGD was an approximation).
+
+A bigger batch size results in slower training. We are taking advantage of batching because of the speed increase.
+
+* Notice that the validation accuracy starts from a low number and with 5 epochs actually finishes at a lower number. That's because there are fewer updates in a single epoch. Try a batch size of 30,000 or 50,000. That's very close to single batch GD for this problem. What do you think about the speed? You will need to change the max epochs to 100 (for instance), as 5 epochs won't be enough to train the model. What do you think about the speed of optimization?
+"""
+
+BUFFER_SIZE = st.sidebar.number_input("Buffer Size", value=100, min_value=1, step=100, format="%i" , help=buffer_size_help)
+
+BATCH_SIZE = st.sidebar.number_input("Buffer Size", value=100, min_value=1, step=100, format="%i" , help=batch_size_help)
+
 # BUFFER_SIZE = 1000
 # BATCH_SIZE = 100
 # hidden_layer_size = 50
@@ -23,7 +36,7 @@ BUFFER_SIZE = st.sidebar.number_input("Buffer Size", value=1000, min_value=1, st
 # model_loss = "sparse_categorical_crossentropy"
 # NUM_EPOCHS = int(st.sidebar.number_input("Number of epochs", min_value=1, step=1, help="Don't go crazy here"))
 
-st.write(type(BUFFER_SIZE))
+st.write(type(BATCH_SIZE))
 
 # as_supervised=True will load the dataset in a 2-tuple structure (input, target) 
 mnist_dataset, mnist_info = tfds.load(name='mnist', with_info=True, as_supervised=True)
