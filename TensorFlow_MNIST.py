@@ -93,7 +93,7 @@ model.compile(optimizer=model_optimizer, loss=model_loss, metrics=["accuracy"])
 
 # NUM_EPOCHS = 5
 
-class TimingCallback(tf.keras.callbacks.Callback):
+class EpochTimingCallback(tf.keras.callbacks.Callback):
     def __init__(self, logs={}):
         self.logs=[]
     def on_epoch_begin(self, epoch, logs={}):
@@ -101,12 +101,11 @@ class TimingCallback(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs={}):
         self.logs.append(time.time()-self.starttime)
 
-cb = TimingCallback()
+epoch_time = EpochTimingCallback()
 
-history = model.fit(train_data, epochs=NUM_EPOCHS, validation_data=(validation_inputs, validation_targets), verbose =1, callbacks=[cb])
+history = model.fit(train_data, epochs=NUM_EPOCHS, validation_data=(validation_inputs, validation_targets), verbose =1, callbacks=[epoch_time])
 
-st.write(cb.logs)
-st.write(sum(cb.logs))
+st.write(epoch_time.logs)
 
 st.write(history.history)
 
@@ -114,8 +113,7 @@ df = pd.DataFrame.from_dict(history.history)
 df.columns = ["Loss", "Accuracy %", "Validation Loss", "Validation Accuracy %"]
 df["Accuracy %"] = df["Accuracy %"] * 100
 df["Validation Accuracy %"] = df["Validation Accuracy %"] * 100
-df.insert(loc=0, column="Epoch Time (s)", value=cb.logs)
-# df.insert(loc=0, column="Epoch", value=df.index+1)
+df.insert(loc=0, column="Epoch Time(s)", value=epoch_time.logs)
 df.index += 1
 
 st.table(df)
