@@ -78,6 +78,7 @@ df = pd.DataFrame.from_dict(history.history)
 df.columns = ["Loss", "Accuracy %", "Validation Loss", "Validation Accuracy %"]
 df["Accuracy %"] = df["Accuracy %"] * 100
 df["Validation Accuracy %"] = df["Validation Accuracy %"] * 100
+df.insert(loc=0, column="Epoch", value=df.index+1)
 
 st.write(history.history)
 
