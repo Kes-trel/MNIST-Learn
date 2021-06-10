@@ -5,6 +5,7 @@ import streamlit as st
 import tensorflow_datasets as tfds
 import time
 from help_text import *
+from help_lists import *
 
 
 #inputs from streamlit app
