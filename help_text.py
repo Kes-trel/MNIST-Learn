@@ -17,5 +17,6 @@ A bigger batch size results in slower training. We are taking advantage of batch
 """
 
 hidden_layer_help = """
-
+To keep simple here we will use same hidden layer unit size for all hidden layers. If you think this is too simple you should not be using this site my friend.
+Try 200 or 500 and so on... The validation accuracy is significantly higher (as the algorithm with 50 hidden units was too simple of a model). Naturally, it takes the algorithm much longer to train (unless early stopping is triggered too soon).
 """

@@ -5,6 +5,7 @@ import streamlit as st
 import tensorflow_datasets as tfds
 from help_text import *
 
+
 #inputs from streamlit app
 
 
@@ -12,7 +13,8 @@ BUFFER_SIZE = st.sidebar.number_input("Buffer Size", value=100, min_value=1, ste
 
 BATCH_SIZE = st.sidebar.number_input("Batch Size", value=100, min_value=1, step=100, format="%i" , help=batch_size_help)
 
-hidden_layer_size = st.sidebar.number_input("Hidden Layer Size", value=100, min_value=1, step=100, format="%i" , help=batch_size_help)
+hidden_layer_size = st.sidebar.number_input("Hidden Layer Unit Size", value=50, min_value=1, step=10, format="%i" , help=hidden_layer_help)
+
 
 # BUFFER_SIZE = 1000
 # BATCH_SIZE = 100
