@@ -80,7 +80,7 @@ model = tf.keras.Sequential([
     # tf.keras.layers.Dense => activation(dot(input, weight) + bias)
     tf.keras.layers.Dense(hidden_layer_size, activation=activation_function), # 1st hidden layer
     tf.keras.layers.Dense(hidden_layer_size, activation=activation_function), # 2nd hidden layer
-    
+
     tf.keras.layers.Dense(output_size, activation='softmax') # output layer
 ])
 
