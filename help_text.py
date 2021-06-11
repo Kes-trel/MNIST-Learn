@@ -89,3 +89,13 @@ Functions
 epochs_help = """
 An epoch indicates the number of passes of the entire training dataset the machine learning algorithm has completed. Determining how many epochs a model should run to train is based on many parameters related to both the data itself and the goal of the model.
 """
+
+test_model_help = """
+After training on the training data and validating on the validation data, we test the final prediction power of our model by running it on the test dataset that the algorithm has NEVER seen before.
+
+It is very important to realize that fiddling with the hyperparameters overfits the validation dataset.
+    
+The test is the absolute final instance. You should not test before you are completely done with adjusting your model. 
+    
+If you adjust your model after testing, you will start overfitting the test dataset, which will defeat its purpose.
+"""

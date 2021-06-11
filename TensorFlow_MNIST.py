@@ -118,5 +118,11 @@ with col_b:
     
 st.table(df)
 
-if st.button("Test The Model"):
+with st.beta_expander("Test The Model"):
+    col_1, col_2 = st.beta_columns([2,1])
+    col_1.write(test_model_help)
+    col_2.image("https://pbs.twimg.com/media/ESY0WNGU4AA3P0S.jpg")
     
+    if st.button("Roger that.. run the test"):
+        test_loss, test_accuracy = model.evaluate(test_data)
+        st.header(f"Test loss is at {test_loss:.3f} and test accuracy is {test_accuracy*100:.1f}%!")
