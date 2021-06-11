@@ -88,3 +88,4 @@ df.insert(loc=0, column="Epoch Time(s)", value=epoch_time.logs)
 df.index += 1
 
 st.table(df)
+
