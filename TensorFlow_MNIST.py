@@ -12,6 +12,8 @@ sns.set()
 from help_text import *
 from help_lists import *
 
+st.set_page_config(page_title="MNIST NN Learner",page_icon="🔢", layout="wide", initial_sidebar_state="auto")
+
 #inputs from streamlit app
 
 BUFFER_SIZE = st.sidebar.number_input("Buffer Size", value=100, min_value=1, step=100, format="%i", help=buffer_size_help)
