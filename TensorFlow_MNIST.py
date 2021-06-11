@@ -3,7 +3,7 @@ import tensorflow as tf
 import streamlit as st
 import tensorflow_datasets as tfds
 import time
-import altair as alt
+import seaborn as sns
 from help_text import *
 from help_lists import *
 
