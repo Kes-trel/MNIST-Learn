@@ -117,3 +117,6 @@ with col_b:
     plot_accuracy()
     
 st.table(df)
+
+if st.button("Test The Model"):
+    
