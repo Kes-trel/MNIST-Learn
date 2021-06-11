@@ -1,9 +1,14 @@
+from matplotlib.pyplot import bar
 import pandas as pd
 import tensorflow as tf
 import streamlit as st
 import tensorflow_datasets as tfds
 import time
 import seaborn as sns
+import matplotlib
+import matplotlib.pyplot as plt
+sns.set()
+
 from help_text import *
 from help_lists import *
 
@@ -88,4 +93,19 @@ df.insert(loc=0, column="Epoch Time(s)", value=epoch_time.logs)
 df.index += 1
 
 st.table(df)
+
+def plot_loss_lines():
+    fig_line, ax = plt.subplots()
+    sns.lineplot(data=df[["Loss","Validation Loss"]]).xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(1))
+    return st.pyplot(fig_line)
+
+def plot_accuracy():
+    bar_data = df[["Accuracy %","Validation Accuracy %"]]
+    bar_data["Epoch"] = df.index
+    bar_data = bar_data.melt(id_vars="Epoch").rename(columns=str.title)
+    min_y_axis = round(bar_data.min(axis=0)["Value"]-5,-1)
+
+    fig_bar, ax = plt.subplots()
+    sns.barplot(x="Epoch", y="Value", hue="Variable", data=bar_data).set(ylim=(min_y_axis, 100))
+    return st.pyplot(fig_bar)
 
