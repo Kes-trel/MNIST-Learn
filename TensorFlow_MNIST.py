@@ -92,8 +92,6 @@ df["Validation Accuracy %"] = df["Validation Accuracy %"] * 100
 df.insert(loc=0, column="Epoch Time(s)", value=epoch_time.logs)
 df.index += 1
 
-st.table(df)
-
 def plot_loss_lines():
     fig_line, ax = plt.subplots()
     sns.lineplot(data=df[["Loss","Validation Loss"]]).xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(1))
@@ -109,3 +107,12 @@ def plot_accuracy():
     sns.barplot(x="Epoch", y="Value", hue="Variable", data=bar_data).set(ylim=(min_y_axis, 100))
     return st.pyplot(fig_bar)
 
+# Streamlit Layout
+
+col_a, col_b = st.beta_columns(2)
+with col_a:
+    plot_loss_lines()
+with col_b:
+    plot_accuracy()
+    
+st.table(df)
