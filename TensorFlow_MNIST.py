@@ -1,4 +1,3 @@
-from matplotlib.pyplot import bar
 import pandas as pd
 import tensorflow as tf
 import streamlit as st
@@ -12,7 +11,7 @@ sns.set()
 from help_text import *
 from help_lists import *
 
-st.set_page_config(page_title="MNIST NN Learner",page_icon="🔢", layout="wide", initial_sidebar_state="auto")
+st.set_page_config(page_title="MNIST NN Trainer",page_icon="🔢", layout="wide", initial_sidebar_state="auto")
 
 #inputs from streamlit app
 
