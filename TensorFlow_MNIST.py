@@ -78,7 +78,6 @@ epoch_time = EpochTimingCallback()
 # Train the model
 history = model.fit(train_data, epochs=NUM_EPOCHS, validation_data=(validation_inputs, validation_targets), verbose =1, callbacks=[epoch_time])
 
-
 # Streamlit section
 
 df = pd.DataFrame.from_dict(history.history)
@@ -87,16 +86,5 @@ df["Accuracy %"] = df["Accuracy %"] * 100
 df["Validation Accuracy %"] = df["Validation Accuracy %"] * 100
 df.insert(loc=0, column="Epoch Time(s)", value=epoch_time.logs)
 df.index += 1
-
-
-# def change_bar_chart(dataframe_in):
-#     price_bar_chart = alt.Chart(dataframe_in).mark_bar().encode(
-#                     x=alt.X(dataframe_in.index, title=None),
-#                     y=alt.Y("Loss", title="Percentage in "),
-#                     tooltip=["Loss", "Accuracy %"]
-#                 ).properties(height=500)
-#     return st.altair_chart(price_bar_chart, use_container_width=True)
-
-# change_bar_chart(df)
 
 st.table(df)
