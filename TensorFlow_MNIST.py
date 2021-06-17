@@ -13,6 +13,10 @@ from help_lists import *
 
 st.set_page_config(page_title="MNIST NN Trainer",page_icon="🔢", layout="wide", initial_sidebar_state="auto")
 
+with st.beta_expander("THE MNIST DATABASE"):
+    st.write("The MNIST database of handwritten digits, has a training set of 60,000 examples, and a test set of 10,000 examples. It is a subset of a larger set available from NIST. The digits have been size-normalized and centered in a fixed-size image. It is a good database for people who want to try learning techniques and pattern recognition methods on real-world data while spending minimal efforts on preprocessing and formatting.")
+    st.write("For more information see http://yann.lecun.com/exdb/mnist/")
+
 #inputs from streamlit app
 
 BUFFER_SIZE = st.sidebar.number_input("Buffer Size", value=100, min_value=1, step=100, format="%i", help=buffer_size_help)
@@ -96,6 +100,7 @@ df.index += 1
 def plot_loss_lines():
     fig_line, ax = plt.subplots()
     sns.lineplot(data=df[["Loss","Validation Loss"]]).xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(1))
+    ax.set(xlabel="Epochs", ylabel="Loss", figsize=(5,10))
     return st.pyplot(fig_line)
 
 def plot_accuracy():
@@ -105,7 +110,8 @@ def plot_accuracy():
     min_y_axis = round(bar_data.min(axis=0)["Value"]-5,-1)
 
     fig_bar, ax = plt.subplots()
-    sns.barplot(x="Epoch", y="Value", hue="Variable", data=bar_data).set(ylim=(min_y_axis, 100))
+    sns.barplot(x="Epoch", y="Value", hue="Variable", data=bar_data)
+    ax.set(xlabel="Epochs", ylabel="Validation", ylim=(min_y_axis, 100), figsize=(5,10))
     return st.pyplot(fig_bar)
 
 # Streamlit Layout
