@@ -112,7 +112,7 @@ def plot_accuracy():
     fig_bar, ax = plt.subplots()
     sns.barplot(x="Epoch", y="Value", hue="Variable", data=bar_data)
     ax.set(xlabel="Epochs", ylabel="Validation", ylim=(min_y_axis, 100))
-    return st.pyplot(fig_bar)
+    return st.pyplot(fig_bar, figsize=(5,10))
 
 # Streamlit Layout
 
