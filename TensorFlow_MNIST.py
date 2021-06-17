@@ -100,7 +100,7 @@ df.index += 1
 def plot_loss_lines():
     fig_line, ax = plt.subplots()
     sns.lineplot(data=df[["Loss","Validation Loss"]]).xaxis.set_major_locator(matplotlib.ticker.MultipleLocator(1))
-    ax.set(xlabel="Epochs", ylabel="Loss", figsize=(5,10))
+    ax.set(xlabel="Epochs", ylabel="Loss")
     return st.pyplot(fig_line)
 
 def plot_accuracy():
@@ -111,7 +111,7 @@ def plot_accuracy():
 
     fig_bar, ax = plt.subplots()
     sns.barplot(x="Epoch", y="Value", hue="Variable", data=bar_data)
-    ax.set(xlabel="Epochs", ylabel="Validation", ylim=(min_y_axis, 100), figsize=(5,10))
+    ax.set(xlabel="Epochs", ylabel="Validation", ylim=(min_y_axis, 100))
     return st.pyplot(fig_bar)
 
 # Streamlit Layout
