@@ -112,7 +112,7 @@ def plot_accuracy():
     fig_bar, ax = plt.subplots()
     sns.barplot(x="Epoch", y="Value", hue="Variable", data=bar_data)
     ax.set(xlabel="Epochs", ylabel="Validation", ylim=(min_y_axis, 100))
-    return st.pyplot(fig_bar, figsize=(5,10))
+    return st.pyplot(fig_bar)
 
 # Streamlit Layout
 
@@ -124,7 +124,7 @@ with col_b:
     
 st.table(df)
 
-with st.beta_expander("Test The Model"):
+with st.beta_expander("TEST THE MODEL"):
     col_1, col_2 = st.beta_columns([2,1])
     col_1.write(test_model_help)
     col_2.image("https://pbs.twimg.com/media/ESY0WNGU4AA3P0S.jpg")
